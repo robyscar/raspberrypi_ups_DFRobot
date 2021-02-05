@@ -11,7 +11,7 @@
   @url https://github.com/DFRobot/DFRobot_raspberrypi_ups
 """
 import sys
-sys.path.append("../..")
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__)))))
 from DFRobot_raspberrypi_ups import *
 
 I2C_MODE              = 0x01       # default use I2C1
