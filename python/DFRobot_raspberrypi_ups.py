@@ -13,6 +13,10 @@
 import serial
 import time
 import smbus
+import datetime
+import time
+
+
 
 I2C_ADDRESS               = 0x58          # i2c slave Address
 
@@ -73,10 +77,10 @@ GET_PLAN_19               = 0x2a
 GET_PLAN_20               = 0x2b
 GET_PLAN_ALL              = 0xFF
 
-AT_START_UP               = 1
-AT_SHUTDOWN               = 2
-AT_ALARM_START_UP         = 3
-AT_ALARM_SHUTDOWN         = 4
+START_UP               = 1
+SHUTDOWN               = 2
+ALARM_START_UP         = 3
+ALARM_SHUTDOWN         = 4
 
 PERIOD_ONCE               = 10
 PERIOD_ONE_YEAR           = 1
@@ -92,8 +96,9 @@ PERIOD_ALARM_ONCE         = 7
 
 class per_vol:
   def __init__(self):
-    self.percentage = 0.0
-    self.voltage    = 0.0     # ³ß´ç
+    self.percentage  = 0.0
+    self.voltage     = 0.0
+    self.power_state = 0
 temp_per = per_vol()
 
 '''
@@ -232,16 +237,19 @@ class DFRobot_raspberrypi_ups(object):
   def get_electric(self):
     self.__txbuf[0] = GET_ELECTRIC
     self.write_reg(GET_ELECTRIC ,self.__txbuf)
-    rslt = self.read_reg(GET_ELECTRIC ,5)
+    rslt = self.read_reg(GET_ELECTRIC ,6)
     if rslt[0] == GET_ELECTRIC:
       percentage = float(rslt[1]) + float(rslt[2] / 100.0)
       voltage = rslt[3]*256 + rslt[4]
+      state = rslt[5]
       temp_per.percentage = percentage
       temp_per.voltage    = voltage
+      temp_per.power_state    = state
       return temp_per
     else:
       temp_per.percentage = 0.0
       temp_per.voltage    = 0.0
+      temp_per.power_state    = 0
       return temp_per
 
   '''
