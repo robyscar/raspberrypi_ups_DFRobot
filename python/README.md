@@ -31,7 +31,11 @@ This sensor should be connected to the I2C Raspberry Pi. <br>
 Run the program:
 
 ```
-$> python ups.py -p ?
+$> python clear_plan.py
+$> python get_electric.py
+$> python get_plan_list.py
+$> python set_alarm.py
+$> python set_get_time.py
 ```
 
 ## Methods
@@ -202,7 +206,7 @@ $> python ups.py -p ?
 ```
 ## History
 
-March 18, 2021 - Version 0.3 released.
+January 29, 2021 - Version 1.0 released.
 
 ## Credits
 

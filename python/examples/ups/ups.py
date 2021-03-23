@@ -207,7 +207,7 @@ def parse_string(string):
       if hour == -1 or minute == -1 or second == -1 or period == -1:
         print "alarm data error!"
       else:
-        set_alarm(hour ,minute ,second ,SET_ONE_ALARM_SHUTDOWN ,period)
+        set_alarm(hour ,minute ,second ,SET_ALARM_STARTING_UP ,period)
     elif backslash == 0 and colon == 2:
       colon_1     = string.index(':' ,18)
       colon_2     = string.index(':' ,colon_1+1)
@@ -217,7 +217,7 @@ def parse_string(string):
       if hour == -1 or minute == -1 or second == -1:
         print "alarm data error!"
       else:
-        set_alarm(hour ,minute ,second ,SET_ONE_ALARM_SHUTDOWN)
+        set_alarm(hour ,minute ,second ,SET_ONE_ALARM_STARTING_UP)
     else:
       print "command error!"
   else:
