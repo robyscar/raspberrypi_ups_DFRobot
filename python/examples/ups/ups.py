@@ -150,13 +150,13 @@ def parse_string(string):
       colon_1 = string.index(':' ,backslash_3)
       colon_2 = string.index(':' ,colon_1+1)
       backslash_4 = string.index('/' ,colon_2+1)
-      year   = analysis_year(string ,9 ,backslash_1)
+      year   = analysis_year(string ,12 ,backslash_1)
       month  = analysis_month(string ,backslash_1+1 ,backslash_2)
       date   = analysis_date(string ,backslash_2+1 ,backslash_3)
       hour   = analysis_hour(string ,backslash_3+1 ,colon_1)
       minute = analysis_minute(string ,colon_1+1 ,colon_2)
       second = analysis_second(string ,colon_2+1 ,backslash_4)
-      period = analysis_period(string ,backslash_4+1 ,string_len ,SHUTDOWN)
+      period = analysis_period(string ,backslash_4+1 ,string_len ,START_UP)
       if year == -1 or month == -1 or date == -1 or hour == -1 or minute == -1 or second == -1 or period == -1:
         print "date error!"
       else:
@@ -179,7 +179,7 @@ def parse_string(string):
       if hour == -1 or minute == -1 or second == -1 or period == -1:
         print "alarm data error!"
       else:
-        set_alarm(hour ,minute ,second ,SET_ONE_ALARM_SHUTDOWN ,period)
+        set_alarm(hour ,minute ,second ,SET_ALARM_SHUTDOWN ,period)
     elif backslash == 0 and colon == 2:
       colon_1     = string.index(':' ,15)
       colon_2     = string.index(':' ,colon_1+1)
@@ -200,7 +200,7 @@ def parse_string(string):
       colon_1     = string.index(':' ,18)
       colon_2     = string.index(':' ,colon_1+1)
       backslash_1 = string.index('/' ,colon_2+1)
-      hour   = analysis_hour(string ,15 ,colon_1)
+      hour   = analysis_hour(string ,18 ,colon_1)
       minute = analysis_minute(string ,colon_1+1 ,colon_2)
       second = analysis_second(string ,colon_2+1 ,backslash_1)
       period = analysis_period(string ,backslash_1+1 ,string_len ,ALARM_START_UP)
@@ -288,7 +288,7 @@ def analysis_hour(string ,begin ,end):
       if string[i] > '9' or string[i] < '0':
         return -1
     hour = int(string[begin:end])
-    if hour > 31 or hour < 1:
+    if hour > 23 or hour < 0:
       return -1;
     else:
       return hour
@@ -402,64 +402,22 @@ def ups_example():
   print "python ups.py -p shutdown=year/month/date/hour:minute:second        |Set the time for a single shutdown"
   print "python ups.py -p starting_up=year/month/date/hour:minute:second     |Set the time for a single boot"
   print "--------------------------------------------------------------------|"
-  print "python ups.py -p alarm_shutdown=hour:minute:second/?                |Alarm clock for days of the week"
   print "python ups.py -p alarm_shutdown=hour:minute:second/1357             |Closed every Monday, Wednesday, Friday, Sunday"
   print "--------------------------------------------------------------------|"
-  print "python ups.py -p alarm_starting_up=hour:minute:second/?             |Alarm clock for days of the week"
-  print "python ups.py -p alarm_starting_up==hour:minute:second/246          |Boot every Tuesday, Thursday, Saturday"
+  print "python ups.py -p alarm_starting_up=hour:minute:second/246           |Boot every Tuesday, Thursday, Saturday"
   print "--------------------------------------------------------------------|"
-  print "python ups.py -p shutdown=year/month/date/hour:minute:second/?      |Set cycle shutdown"
   print "python ups.py -p shutdown=year/month/date/hour:minute:second/Y      |Cycle year"
   print "python ups.py -p shutdown=year/month/date/hour:minute:second/M      |Cycle month"
   print "python ups.py -p shutdown=year/month/date/hour:minute:second/2W     |Cycle two week"
   print "python ups.py -p shutdown=year/month/date/hour:minute:second/W      |Cycle week"
   print "python ups.py -p shutdown=year/month/date/hour:minute:second/D      |Cycle date"
   print "--------------------------------------------------------------------|"
-  print "python ups.py -p starting_up=year/month/date/hour:minute:second/?   |Set cycle Boot up"
   print "python ups.py -p starting_up=year/month/date/hour:minute:second/Y   |Cycle year"
   print "python ups.py -p starting_up=year/month/date/hour:minute:second/M   |Cycle month"
   print "python ups.py -p starting_up=year/month/date/hour:minute:second/2W  |Cycle two week"
   print "python ups.py -p starting_up=year/month/date/hour:minute:second/W   |Cycle week"
   print "python ups.py -p starting_up=year/month/date/hour:minute:second/D   |Cycle date"
   print "--------------------------------------------------------------------|"	
-'''
-  print "(2000 < year < 2100) (1 < month  < 12) (1 < date   < 31)  |Year, month and day range"
-  print "(0 < hour < 23)      (0 < minute < 59) (0 < second < 59)  |Hour, minute, second range"
-  print "period is cycle week"
-  print " ________________________________________________________________________"
-  print "|reserve |sunday |saturday |Friday |Thursday |Wednesday |Tuesday |Monday |"
-  print "|0       |0      |0        |0      |0        |0         |0       |0      |"
-  print "|________|_______|_________|_______|_________|__________|________|_______|"
-  print "eg: 0b00000001 is monday"
-  print "    0b00100001 is saturday ,monday"
-  print "    0b01111111 is sunday ,saturday ,Friday ,Thursday ,Wednesday ,Tuesday ,Monday"
-  print ""
-  print "1.  get_time         eg:   python *.py -get_time"
-  print "2.  get_electric     eg:   python *.py -get_electric"
-  print "3.  ups_example      eg:   python *.py -ups_example"
-  print "4.  get_plan         eg    python *.py -get_plan (1-20)"
-  print "5.  get_plan_all     eg:   python *.py -get_plan_all"
-  print "6.  get_plan_len     eg:   python *.py -get_plan_len"
-  print "7.  clear_plan       eg    python *.py -clear_plan (1-20)"
-  print "8.  clear_plan_all   eg:   python *.py -clear_plan_all"
-  print "9.  set time         eg:   python *.py -set_time -year 2020 -month 2 -date 3 -hour 10 -minute 10 -second 10"
-  print "10. set_one_up       eg:   python *.py -set_one_up -year 2020 -month 2 -date 3 -hour 10 -minute 10 -second 10"
-  print "11. set_one_down     eg:   python *.py -set_one_down -year 2020 -month 2 -date 3 -hour 10 -minute 10 -second 10"
-  print "12. set_year_up      eg:   python *.py -set_year_up -year 2020 -month 2 -date 3 -hour 10 -minute 10 -second 10"
-  print "13. set_year_down    eg:   python *.py -set_year_down -year 2020 -month 2 -date 3 -hour 10 -minute 10 -second 10"
-  print "14. set_month_up     eg:   python *.py -set_month_up -year 2020 -month 2 -date 3 -hour 10 -minute 10 -second 10"
-  print "15. set_month_down   eg:   python *.py -set_month_down -year 2020 -month 2 -date 3 -hour 10 -minute 10 -second 10"
-  print "16. set_tweek_up     eg:   python *.py -set_tweek_up -year 2020 -month 2 -date 3 -hour 10 -minute 10 -second 10"
-  print "17. set_tweek_down   eg:   python *.py -set_tweek_down -year 2020 -month 2 -date 3 -hour 10 -minute 10 -second 10"
-  print "18. set_week_up      eg:   python *.py -set_week_up -year 2020 -month 2 -date 3 -hour 10 -minute 10 -second 10"
-  print "19. set_week_down    eg:   python *.py -set_week_down -year 2020 -month 2 -date 3 -hour 10 -minute 10 -second 10"
-  print "20. set_date_up      eg:   python *.py -set_date_up -year 2020 -month 2 -date 3 -hour 10 -minute 10 -second 10"
-  print "21. set_date_down    eg:   python *.py -set_date_down -year 2020 -month 2 -date 3 -hour 10 -minute 10 -second 10"  
-  print "22. set_one_alarm_up      eg:   python *.py -set_one_alarm_up -hour 10 -minute 10 -second 10"
-  print "23. set_one_alarm_down    eg:   python *.py -set_one_alarm_down -hour 10 -minute 10 -second 10"
-  print "24. set_loop_alarm_up     eg:   python *.py -set_loop_alarm_up -hour 10 -minute 10 -second 10 -period 0b01111111"
-  print "25. set_loop_alarm_down   eg:   python *.py -set_loop_alarm_down -hour 10 -minute 10 -second 10 -period 0b01111111"
-'''
 
 def set_at(year ,month ,date ,hour ,minute ,second ,types):
   '''
@@ -485,6 +443,9 @@ def set_at(year ,month ,date ,hour ,minute ,second ,types):
          SET_DATE_SHUTDOWN           Set the shutdown cycle in days 
   '''
   oldnum = ups.get_plan_len()
+  if oldnum > 19:
+    print "The plan is full, please delete some first!"
+    return
   timedata = time_struct()
   timedata.year   = year
   timedata.month  = month
@@ -496,11 +457,12 @@ def set_at(year ,month ,date ,hour ,minute ,second ,types):
   if ups.set_at_time(timedata) != 1:
     print "Please check whether the time is correct!"
   else:
+    time.sleep(0.5)
     newnum = ups.get_plan_len()
     if oldnum == newnum:
       print "Set the alarm to last longer than the current time!"
     else:
-      print "set success!"
+       print "set success!"
 
 def set_alarm(hour ,minute ,second ,types ,period=0):
   '''
@@ -523,6 +485,10 @@ def set_alarm(hour ,minute ,second ,types ,period=0):
             0b00100001 is saturday ,monday
             0b01111111 is sunday ,saturday ,Friday ,Thursday ,Wednesday ,Tuesday ,Monday
   '''
+  oldnum = ups.get_plan_len()
+  if oldnum > 20:
+    print "The plan is full, please delete some first!"
+    return
   alarmdata = alarm_time_struct()
   alarmdata.hour   = hour
   alarmdata.minute = minute
@@ -532,7 +498,12 @@ def set_alarm(hour ,minute ,second ,types ,period=0):
   if ups.set_alarm_time(alarmdata) != 1:
     print "Please check whether the time is correct!"
   else:
-    print "set alarm success!"
+    time.sleep(0.5)
+    newnum = ups.get_plan_len()
+    if oldnum == newnum:
+      print "Set the alarm to last longer than the current time!"
+    else:
+      print "set success!"
 
 def set_clear_all():
   if ups.clear_plan_all() == 1:
@@ -615,8 +586,11 @@ def read_plan_all():
     # Get a list of all plans
     # number Number of plans 
   '''
+  if number >= 20:
+    number = 20
   for i in range(0,number):
     plan_list = ups.get_plan_list(GET_PLAN_1+i)
+    time.sleep(0.03)
     if plan_list.types == START_UP:
       print("%d - START_UP=%d/%d/%d/%d:%d:%d%s\t-next alarm- %d/%d/%d/%d:%d:%d"%(i+1,plan_list.year,plan_list.month,plan_list.date,\
       plan_list.hour,plan_list.minute,plan_list.second,plan_list.period_string,\
@@ -632,7 +606,9 @@ def read_plan_all():
       print("%d - ALARM_SHUTDOWN=%d:%d:%d%s\t-next alarm- %d/%d/%d/%d:%d:%d"%(i+1,plan_list.hour,plan_list.minute,plan_list.second,plan_list.period_string,\
       plan_list.n_year,plan_list.n_month,plan_list.n_date,plan_list.n_hour,plan_list.n_minute,plan_list.n_second))
     else:
-      print "get plan empty or error"
+      #print "get plan empty or error"
+      time.sleep(0.01)
+    
 
 def read_plan(number):
   num = ups.get_plan_len()

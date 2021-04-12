@@ -467,7 +467,7 @@ class DFRobot_raspberrypi_ups_I2C(DFRobot_raspberrypi_ups):
         return
       except:
         print("please check connect!")
-        time.sleep(1)
+        #time.sleep(1)
   '''
     @brief read the data from the register
     @param reg register address
@@ -480,4 +480,4 @@ class DFRobot_raspberrypi_ups_I2C(DFRobot_raspberrypi_ups):
         return rslt
       except:
         print("please check connect!")
-        time.sleep(1)
+        #time.sleep(1)
