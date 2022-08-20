@@ -1,7 +1,9 @@
 # raspberrypi_ups_DFRobot
 
 https://wiki.dfrobot.com/ONPOWER_UPS_HAT_for_Raspberry_Pi_SKU_DFR0677
-https://www.dfrobot.com/product-203.html
+
+https://www.dfrobot.com/product-1825.html
+
 
 
 SKU:DFR0677
